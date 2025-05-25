@@ -1340,72 +1340,74 @@
         }
 
         playClickSound() {
-            if (!this.audioContext) return;
-            
-            const oscillator = this.audioContext.createOscillator();
-            const gainNode = this.audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(this.audioContext.destination);
-            
-            oscillator.frequency.setValueAtTime(800, this.audioContext.currentTime);
-            oscillator.frequency.exponentialRampToValueAtTime(400, this.audioContext.currentTime + 0.1);
-            
-            gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
-            
-            oscillator.start(this.audioContext.currentTime);
-            oscillator.stop(this.audioContext.currentTime + 0.1);
-        }
+    if (!this.audioContext) return;
+    
+    const oscillator = this.audioContext.createOscillator();
+    const gainNode = this.audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(800, this.audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(400, this.audioContext.currentTime + 0.1);
+    
+    // VOLUME DIPERBESAR dari 0.1 jadi 0.3
+    gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
+    
+    oscillator.start(this.audioContext.currentTime);
+    oscillator.stop(this.audioContext.currentTime + 0.1);
+}
 
-        playSuccessSound() {
-            if (!this.audioContext) return;
-            
-            const oscillator = this.audioContext.createOscillator();
-            const gainNode = this.audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(this.audioContext.destination);
-            
-            oscillator.frequency.setValueAtTime(523.25, this.audioContext.currentTime);
-            oscillator.frequency.setValueAtTime(659.25, this.audioContext.currentTime + 0.1);
-            oscillator.frequency.setValueAtTime(783.99, this.audioContext.currentTime + 0.2);
-            
-            gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.3);
-            
-            oscillator.start(this.audioContext.currentTime);
-            oscillator.stop(this.audioContext.currentTime + 0.3);
-        }
+playSuccessSound() {
+    if (!this.audioContext) return;
+    
+    const oscillator = this.audioContext.createOscillator();
+    const gainNode = this.audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(523.25, this.audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(659.25, this.audioContext.currentTime + 0.1);
+    oscillator.frequency.setValueAtTime(783.99, this.audioContext.currentTime + 0.2);
+    
+    // VOLUME DIPERBESAR dari 0.1 jadi 0.4
+    gainNode.gain.setValueAtTime(0.4, this.audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.3);
+    
+    oscillator.start(this.audioContext.currentTime);
+    oscillator.stop(this.audioContext.currentTime + 0.3);
+}
 
-        playHoverSound() {
-            if (!this.audioContext) return;
-            
-            const oscillator = this.audioContext.createOscillator();
-            const gainNode = this.audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(this.audioContext.destination);
-            
-            oscillator.frequency.setValueAtTime(600, this.audioContext.currentTime);
-            
-            gainNode.gain.setValueAtTime(0.05, this.audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.05);
-            
-            oscillator.start(this.audioContext.currentTime);
-            oscillator.stop(this.audioContext.currentTime + 0.05);
-        }
-    }
+playHoverSound() {
+    if (!this.audioContext) return;
+    
+    const oscillator = this.audioContext.createOscillator();
+    const gainNode = this.audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(600, this.audioContext.currentTime);
+    
+    // VOLUME DIPERBESAR dari 0.05 jadi 0.15
+    gainNode.gain.setValueAtTime(0.15, this.audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.05);
+    
+    oscillator.start(this.audioContext.currentTime);
+    oscillator.stop(this.audioContext.currentTime + 0.05);
+}
 
     const soundManager = new SoundManager();
 
     // Coupon System
     const coupons = {
-        'SAVE10': { discount: 10, description: 'Diskon 10%' },
-        'SAVE20': { discount: 20, description: 'Diskon 20%' },
+        'PROMO15': { discount: 10, description: 'Diskon 10%' },
+        'FLASH20': { discount: 20, description: 'Diskon 20%' },
         'VIP30': { discount: 30, description: 'Diskon 30%' },
         'NEWBIE': { discount: 15, description: 'Diskon 15% untuk member baru' },
-        'FLASH50': { discount: 50, description: 'Flash Sale 50%' }
+        'FLASH10': { discount: 50, description: 'Flash Sale 50%' }
     };
 
     let activeCoupon = null;
