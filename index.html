@@ -1361,7 +1361,7 @@
             <div class="footer-section">
                 <h4>Kontak</h4>
                 <div class="contact-info">
-                    <p>📞 +62 21 1234 5678</p>
+                    <p>📞 +62 889-8069-8613</p>
                     <p>📧 idcloudfast15@gmail.com</p>
                     <p>📍 Jawa Tengah, Indonesia</p>
                 </div>
@@ -1451,8 +1451,8 @@
         // Coupon System
         const coupons = {
             'PROMO15': { discount: 10, description: 'Diskon 10%' },
-            'FLASH20': { discount: 20, description: 'Diskon 20%' },
-            'VIP30': { discount: 30, description: 'Diskon 30%' },
+            'FLASH2': { discount: 20, description: 'Diskon 20%' },
+            'PROMO2025': { discount: 30, description: 'Diskon 30%' },
             'NEWBIE': { discount: 15, description: 'Diskon 15% untuk member baru' },
             'FLASH10': { discount: 50, description: 'Flash Sale 50%' }
         };
@@ -1587,7 +1587,7 @@
                 discountInfo = `\n💰 *Harga Asli:* ${formatPrice(product.price)}\n🎫 *Diskon:* ${activeCoupon.discount}% (${activeCoupon.description})\n💸 *Harga Setelah Diskon:* ${formatPrice(finalPrice)}\n`;
             }
 
-            let message = `🛒 *PEMESANAN PRODUK - RUZX OFFICIAL*\n\n`;
+            let message = `🛒 *PEMESANAN PRODUK - IDCloufFast*\n\n`;
             message += `📦 *Detail Produk:*\n`;
             message += `🖥️ ${product.name}\n`;
             message += `📝 Deskripsi: ${product.description}\n`;
@@ -1611,7 +1611,7 @@
             message += `• Estimasi pengiriman\n\n`;
             message += `Terima kasih! 🙏`;
 
-            const adminWhatsApp = '6281234567890';
+            const adminWhatsApp = '6288980698613';
             const whatsappURL = `https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(message)}`;
 
             soundManager.playSuccessSound();
