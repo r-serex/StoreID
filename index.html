@@ -209,6 +209,7 @@
             transition: all 0.3s ease;
             cursor: pointer;
             animation: fadeInUp 0.6s ease;
+            position: relative; /* DITAMBAHKAN untuk positioning badge */
         }
 
         .product-card:hover {
@@ -256,6 +257,58 @@
 
         .product-card:hover .product-image::before {
             opacity: 1;
+        }
+
+        /* BADGE PALING LARIS - DITAMBAHKAN */
+        .bestseller-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 10;
+            box-shadow: 0 3px 10px rgba(231, 76, 60, 0.4);
+            animation: pulse 2s infinite;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Animasi Pulse untuk Badge - DITAMBAHKAN */
+        @keyframes pulse {
+            0% { 
+                transform: scale(1);
+                box-shadow: 0 3px 10px rgba(231, 76, 60, 0.4);
+            }
+            50% { 
+                transform: scale(1.05);
+                box-shadow: 0 5px 15px rgba(231, 76, 60, 0.6);
+            }
+            100% { 
+                transform: scale(1);
+                box-shadow: 0 3px 10px rgba(231, 76, 60, 0.4);
+            }
+        }
+
+        /* Efek berkilau pada badge - DITAMBAHKAN */
+        .bestseller-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
         .product-info {
@@ -464,6 +517,14 @@
                 padding: 12px 24px;
                 font-size: 0.95rem;
             }
+
+            /* Badge responsive - DITAMBAHKAN */
+            .bestseller-badge {
+                top: 8px;
+                right: 8px;
+                padding: 6px 10px;
+                font-size: 0.65rem;
+            }
         }
 
         /* Extra small devices */
@@ -491,6 +552,14 @@
             .btn-primary {
                 padding: 10px 20px;
                 font-size: 0.9rem;
+            }
+
+            /* Badge untuk mobile kecil - DITAMBAHKAN */
+            .bestseller-badge {
+                top: 6px;
+                right: 6px;
+                padding: 5px 8px;
+                font-size: 0.6rem;
             }
         }
 
@@ -871,20 +940,6 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-
-            100% {
-                transform: scale(1);
             }
         }
 
@@ -1458,14 +1513,15 @@
 
         let activeCoupon = null;
 
-        // Products Data - MENGGUNAKAN GAMBAR YANG MENGISI SELURUH AREA
+        // Products Data - PRODUK PERTAMA AKAN MENDAPAT BADGE "PALING LARIS"
         const products = [
             {
                 id: 1,
                 name: "RAM Unlimited",
                 description: "Spekifikasi VPS Digital Ocean Bill PayPal RAM 16GB 8vCPU",
                 price: 13000,
-                image: "https://files.catbox.moe/k3pwzz.jpg"
+                image: "https://files.catbox.moe/k3pwzz.jpg",
+                isBestseller: true // DITAMBAHKAN: Menandai produk paling laris
             },
             {
                 id: 2,
@@ -1586,10 +1642,16 @@
                 discountInfo = `\n💰 *Harga Asli:* ${formatPrice(product.price)}\n🎫 *Diskon:* ${activeCoupon.discount}% (${activeCoupon.description})\n💸 *Harga Setelah Diskon:* ${formatPrice(finalPrice)}\n`;
             }
 
-            let message = `🛒 *PEMESANAN PRODUK - IDCloufFast*\n\n`;
+            let message = `🛒 *PEMESANAN PRODUK - IDCloudFast*\n\n`;
             message += `📦 *Detail Produk:*\n`;
-            message += `🖥️ ${product.name}\n`;
-            message += `📝 Deskripsi: ${product.description}\n`;
+            message += `🖥️ ${product.name}`;
+            
+            // DITAMBAHKAN: Info bestseller di pesan WhatsApp
+            if (product.isBestseller) {
+                message += ` 🔥 *PALING LARIS*`;
+            }
+            
+            message += `\n📝 Deskripsi: ${product.description}\n`;
 
             if (activeCoupon) {
                 message += discountInfo;
@@ -1673,10 +1735,16 @@
                 `;
                 }
 
-                // GAMBAR SEKARANG MENGISI SELURUH AREA KOTAK
+                // DITAMBAHKAN: Logika untuk badge bestseller
+                let bestsellerBadge = '';
+                if (product.isBestseller) {
+                    bestsellerBadge = '<div class="bestseller-badge">🔥 PALING LARIS</div>';
+                }
+
                 productCard.innerHTML = `
                 <div class="product-image">
                     <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/400x300/667eea/ffffff?text=NO+IMAGE'">
+                    ${bestsellerBadge}
                 </div>
                 <div class="product-info">
                     <h3 class="product-name">${product.name}</h3>
@@ -1763,6 +1831,12 @@
             } else {
                 header.style.background = 'rgba(255, 255, 255, 0.95)';
                 header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        const style = document.createElement('style');
+        style.textContent = `
+        @0,0,0.1)';
             }
         });
 
